@@ -61,11 +61,11 @@ const createInvoice = async (req, res) => {
 
     // 🧾 Compact, single-page PDF settings
     const options = {
-      width: '80mm',
-      height: '297mm',
-      border: '0mm',
+      width: '190mm',                 // Slightly smaller than A4 width (210mm)
+      height: '280mm',                // Slightly shorter than full A4 height (297mm)
+      border: '5mm',
       base: `file://${path.resolve('public/temp')}/`,
-      localUrlAccess: true, // ✅ added missing comma here
+      localUrlAccess: true,
       footer: {
         height: '10mm',
         contents: {
