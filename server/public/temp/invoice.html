@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Invoice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+      color: #333;
+    }
+    .logo {
+      max-width: 180px;
+      background-color: #f9f9f9;
+      padding: 4px;
+      margin-top: -8px;
+      margin-bottom: 9px;
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    .header-table {
+      margin-bottom: 20px;
+    }
+    .header-table td {
+      border: none;
+      vertical-align: top;
+    }
+    .company-info {
+      padding-left: 10px;
+    }
+    .company-info h1 {
+      margin: 0;
+      font-size: 26px;
+      margin-top: 10px;
+    }
+    .company-info p {
+      margin: 2px 0;
+      font-size: 14px;
+    }
+    .invoice-info {
+      text-align: right;
+    }
+    .invoice-info h2 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+    }
+    .invoice-info p {
+      font-size: 13px;
+    }
+    .footer-summary {
+      float: right;
+      margin-top: 20px;
+      text-align: right;
+    }
+    .signature {
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <table class="header-table">
+    <tr>
+      <td style="width: 20%;">
+        <img class="logo" src="data:image/jpeg;base64,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" alt="Company Logo" />
+      </td>
+      <td class="company-info" style="width: 50%;">
+        <h1>Ashok Disposal Store</h1>
+        <p>Vitoba Chowk Mainline,Hinganghat,442301</p>
+        <p>📞 +91-8421997651, 📞 +91-9021816598</p>
+      </td>
+      <td class="invoice-info" style="width: 30%;">
+        <h2>Invoice</h2>
+        <p><strong>No:</strong> INV-12</p>
+        <p><strong>Date:</strong> 2025-06-24</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Billing / Shipping -->
+  <table>
+    <tr>
+      <td>
+        <p><strong>New Zulelal Mall</strong></p>
+        <p>Janwadi , GokhaleNagar 287</p>
+        <p>📞 +91-8329828952</p>
+      </td>
+      <td>
+        <p><strong>Rahul Gujar</strong></p>
+        <p>Vitoba Chowk , Hinganghat</p>
+        <p>📞 +91-9021816598</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Items Table -->
+  <table style="margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Qty.</th>
+        <th>Price</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>62 ML Cup (date - 11 April)</td>
+        <td>10</td>
+        <td>20</td>
+        <td><b>₹200.00</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Totals -->
+  <div class="footer-summary">
+    <p><strong>Subtotal:</strong> ₹200.00</p>
+    <p><strong>Total:</strong> <b>₹200.00</b></p>
+  </div>
+
+  <!-- Signature -->
+  <div class="signature">
+    <p><strong>Signature By</strong><br>Ashok Disposal Store</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;1,200&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+}
+
+/* Container for layout control */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+/* Header / Company Info */
+.outer-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.outer-table .logo {
+  max-width: 160px;
+}
+
+.outer-table h1 {
+  font-weight: 500;
+  font-size: 24px;
+  text-transform: capitalize;
+  margin-bottom: 6px;
+}
+
+.outer-table h2 {
+  font-weight: 400;
+  font-size: 18px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.outer-table p {
+  font-size: 13px;
+  margin: 2px 0;
+}
+
+.outer-table thead th {
+  vertical-align: top;
+  padding: 10px;
+}
+
+.outer-table thead th:first-child {
+  text-align: left;
+}
+
+.outer-table thead th:last-child {
+  text-align: right;
+}
+
+/* Item Table */
+.inner-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 13px;
+}
+
+.inner-table thead th {
+  background-color: #f0f0f0;
+  border: 1px solid #aaa;
+  padding: 10px;
+  text-align: left;
+}
+
+.inner-table tbody td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.inner-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Totals / Summary */
+.footer-summary {
+  margin-top: 30px;
+  text-align: right;
+  font-size: 14px;
+}
+
+.footer-summary p {
+  margin: 6px 0;
+  font-weight: 500;
+}
+
+/* Optional: Clear floats if you use any floated elements */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}

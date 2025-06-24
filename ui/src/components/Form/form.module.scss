@@ -1,0 +1,251 @@
+.form {
+  $primary-color: #e619a1;
+
+  h2 {
+    text-align: center;
+  }
+
+  fieldset {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+
+    legend {
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+  }
+
+  .input_group {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-column-gap: 10px;
+    -moz-column-gap: 10px;
+    column-gap: 10px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    & > div {
+      margin-top: 15px;
+      width: 100%;
+      position: relative;
+
+      .company_logo {
+        position: absolute;
+        max-width: 80px;
+        max-height: 80px;
+        top: -60px;
+        right: 50%;
+        -webkit-transform: translateX(50%);
+        -ms-transform: translateX(50%);
+        transform: translateX(50%);
+        object-fit: cover;
+        object-position: center;
+        background-color: #fff;
+        padding: 8px;
+
+        @media screen and (max-width: 600px) {
+          top: -118.5px;
+          right: 0;
+          -webkit-transform: translateX(0);
+          -ms-transform: translateX(0);
+          transform: translateX(0);
+        }
+      }
+    }
+
+    label,
+    input,
+    select {
+      display: block;
+      width: 100%;
+    }
+
+    label.file_upload_wrapper {
+      position: relative;
+      text-align: center;
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 400;
+      margin-top: 30px;
+
+      input[type='file'] {
+        display: none;
+        position: absolute;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+
+      & > div {
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  label {
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  input::placeholder {
+    color: #888;
+  }
+
+  input,
+  textarea,
+  select {
+    padding: 10px 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+
+    &:not(.item > input):focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 4px rgba($primary-color, 0.7);
+    }
+  }
+
+  button {
+    display: inline-block;
+    background-color: $primary-color;
+    border: none;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    transition: all 0.4s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  .invoice_items {
+    .item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      margin-bottom: 10px;
+      border: 1px solid $primary-color;
+      border-radius: 4px;
+      overflow: hidden;
+
+      &:focus-within {
+        box-shadow: 0 0 4px rgba($primary-color, 0.7);
+      }
+
+      input {
+        width: calc(92% / 3);
+        border: none;
+        border-radius: 0;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      button {
+        min-width: 8%;
+        border-radius: 0;
+        border: none;
+      }
+
+      @media screen and (max-width: 600px) {
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+
+        input,
+        button {
+          width: 100%;
+          margin-bottom: 5px;
+          border: 1px solid #333 !important;
+          border-radius: 4px !important;
+        }
+      }
+    }
+
+    & > button {
+      text-transform: uppercase;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+
+  & > button {
+    float: right;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+    text-transform: uppercase;
+    padding: 24px;
+    border-radius: 12px;
+
+    &:hover {
+      -webkit-transform: scale(0.98);
+      -ms-transform: scale(0.98);
+      transform: scale(0.98);
+      -webkit-box-shadow: 0 3px 4px 2px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 3px 4px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    @media screen and (max-width: 600px) {
+      float: none;
+    }
+  }
+
+  &::after {
+    display: table;
+    content: '';
+    clear: both;
+  }
+}
+
+
+.company_info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.company_logo {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.company_details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.company_name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.company_address,
+.company_phone {
+  font-size: 0.95rem;
+  margin: 2px 0;
+  color: #444;
+}
+
