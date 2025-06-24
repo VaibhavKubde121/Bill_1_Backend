@@ -1,24 +1,23 @@
 const fs = require('fs');
 const path = require('path');
 
-// Ensure rootDir is set (adjust if needed)
+// Define root directory of the project
 const rootDir = path.resolve(__dirname, '../');
 
-// File configuration
-const logoFileName = 'company_logo.jpg'; // ✅ use consistent name used in your invoice generator
+// Expected logo filename and path
+const logoFileName = 'company_logo.jpg'; // Use consistent filename throughout
 const logoPath = path.join(rootDir, 'public', 'temp', logoFileName);
 
 let logoBase64 = '';
 
 try {
-    // ✅ Check if logo file exists
+    // ✅ Check if logo exists
     if (fs.existsSync(logoPath)) {
         const imageBuffer = fs.readFileSync(logoPath);
 
-        // 🔍 Detect MIME type
+        // ✅ Determine correct MIME type
         const ext = path.extname(logoFileName).toLowerCase();
         let mimeType = '';
-
         if (ext === '.jpg' || ext === '.jpeg') {
             mimeType = 'image/jpeg';
         } else if (ext === '.png') {
@@ -27,20 +26,21 @@ try {
             console.warn('⚠️ Unsupported logo file type:', ext);
         }
 
-        // ✅ Convert to base64 if valid image
+        // ✅ Convert image to base64 if MIME type is valid
         if (mimeType) {
-            logoBase64 = `data:${mimeType};base64,${imageBuffer.toString('base64')}`;
+            const base64Data = imageBuffer.toString('base64');
+            logoBase64 = `data:${mimeType};base64,${base64Data}`;
         }
     } else {
-        console.warn('⚠️ Logo file not found at:', logoPath);
+        console.warn(`⚠️ Logo file not found at: ${logoPath}`);
     }
 } catch (err) {
-    console.error('❌ Error while reading or converting logo file:', err.message);
+    console.error('❌ Error reading or converting logo file:', err.message);
 }
 
-// 🛡️ Optional fallback base64 if nothing loaded
+// Optional fallback base64 image string (empty if none)
 if (!logoBase64) {
-    logoBase64 = ''; // You can optionally use a static base64 image string here
+    logoBase64 = ''; // Optionally add a fallback base64 logo here
 }
 
 module.exports = logoBase64;

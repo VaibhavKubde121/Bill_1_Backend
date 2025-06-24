@@ -7,20 +7,20 @@ const rootDir = path.resolve(__dirname, '../');
 module.exports = function DefaultTemplate({
   details: {
     currency,
-    companyLogo = 'company_logo.jpg', // ✅ Updated to match your actual filename
+    companyLogo = 'company_logo.jpg',
     companyName = 'Ashok Disposal Store',
-    companyAddress = 'Vitoba Chowk Mainline,Hinganghat,442301',
+    companyAddress = 'Vitoba Chowk Mainline, Hinganghat, 442301',
     invoiceNumber,
     invoiceDate,
     billingName = 'Customer',
     billingPhone = '',
     billingAddress = '',
     shippingName = 'Rahul Gujar',
-    shippingAddress = 'Vitoba Chowk , Hinganghat',
+    shippingAddress = 'Vitoba Chowk, Hinganghat',
   },
   lineItems,
 }) {
-  // ✅ Embed logo as base64
+  // 🖼️ Convert logo to base64
   let logoBase64 = '';
   const logoPath = path.join(rootDir, 'public', 'temp', companyLogo);
 
@@ -29,28 +29,23 @@ module.exports = function DefaultTemplate({
       const imageBuffer = fs.readFileSync(logoPath);
       const ext = path.extname(companyLogo).toLowerCase();
       const mimeType =
-        ext === '.jpg' || ext === '.jpeg'
-          ? 'image/jpeg'
-          : ext === '.png'
-            ? 'image/png'
+        ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg'
+          : ext === '.png' ? 'image/png'
             : '';
       if (mimeType) {
         logoBase64 = `data:${mimeType};base64,${imageBuffer.toString('base64')}`;
-      } else {
-        console.warn('⚠️ Unsupported logo file type:', ext);
       }
     } else {
-      console.warn('⚠️ Logo file not found at:', logoPath);
+      console.warn('⚠️ Logo not found:', logoPath);
     }
-  } catch (e) {
-    console.warn('⚠️ Failed to load logo image:', e.message);
+  } catch (err) {
+    console.error('❌ Logo load error:', err.message);
   }
 
-  // 🧾 Create line items
+  // 🧾 Build line items
   let itemsPurchased = '';
   let total = 0;
-
-  lineItems.forEach((item) => {
+  lineItems.forEach(item => {
     const amount = Number(item.quantity || 0) * parseFloat(item.price || 0);
     total += amount;
     itemsPurchased += `
@@ -58,11 +53,11 @@ module.exports = function DefaultTemplate({
         <td>${item.description || ''}</td>
         <td>${item.quantity || 0}</td>
         <td>${moneyFormat(currency, item.price || 0)}</td>
-        <td><b>${moneyFormat(currency, amount)}</b></td>
+        <td>${moneyFormat(currency, amount)}</td>
       </tr>`;
   });
 
-  // 🔧 Return HTML string
+  // 📄 Return HTML
   return `<!doctype html>
 <html>
 <head>
@@ -72,76 +67,69 @@ module.exports = function DefaultTemplate({
   <style>
     body {
       font-family: Arial, sans-serif;
+      font-size: 10px;
+      color: #000;
+      padding: 10px;
       margin: 0;
-      padding: 20px;
-      background: #f9f9f9;
-      color: #333;
-    }
-    .logo {
-      max-width: 180px;
-      background-color: #f9f9f9;
-      padding: 4px;
-      margin-top: -8px;
-      margin-bottom: 9px;
-      border-radius: 4px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-      text-align: left;
     }
     .header-table {
-      margin-bottom: 20px;
+      width: 100%;
+      margin-bottom: 10px;
     }
     .header-table td {
       border: none;
       vertical-align: top;
     }
-    .company-info {
-      padding-left: 10px;
+    .logo {
+      max-width: 80px;
     }
     .company-info h1 {
       margin: 0;
-      font-size: 26px;
-      margin-top: 10px;
+      font-size: 14px;
     }
     .company-info p {
       margin: 2px 0;
-      font-size: 14px;
+      font-size: 10px;
     }
     .invoice-info {
       text-align: right;
     }
     .invoice-info h2 {
-      margin: 0 0 6px 0;
-      font-size: 18px;
+      margin: 0;
+      font-size: 12px;
     }
     .invoice-info p {
-      font-size: 13px;
+      margin: 2px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px;
+      text-align: left;
     }
     .footer-summary {
-      float: right;
-      margin-top: 20px;
       text-align: right;
+      margin-top: 10px;
     }
     .signature {
-      margin-top: 40px;
-      font-size: 14px;
+      margin-top: 20px;
+      font-size: 10px;
     }
   </style>
 </head>
 <body>
-  <!-- Header Section -->
+
+  <!-- Header -->
   <table class="header-table">
     <tr>
-      <td style="width: 20%;">
-        ${logoBase64 ? `<img class="logo" src="${logoBase64}" alt="Company Logo" />` : ''}
+      <td style="width: 25%;">
+        ${logoBase64 ? `<img src="${logoBase64}" class="logo" alt="Logo" />` : ''}
       </td>
-      <td class="company-info" style="width: 50%;">
+      <td class="company-info" style="width: 45%;">
         <h1>${companyName}</h1>
         <p>${companyAddress}</p>
         <p>📞 +91-8421997651, 📞 +91-9021816598</p>
@@ -154,28 +142,28 @@ module.exports = function DefaultTemplate({
     </tr>
   </table>
 
-  <!-- Billing / Shipping -->
+  <!-- Billing/Shipping -->
   <table>
     <tr>
       <td>
-        <p><strong>${billingName}</strong></p>
-        <p>${billingAddress ? billingAddress.split('/').join('<br/>') : ''}</p>
-        <p>📞 +91-${billingPhone}</p>
+        <strong>${billingName}</strong><br/>
+        ${billingAddress ? billingAddress.split('/').join('<br/>') : ''}<br/>
+        📞 +91-${billingPhone}
       </td>
       <td>
-        <p><strong>${shippingName}</strong></p>
-        <p>${shippingAddress ? shippingAddress.split('/').join('<br/>') : ''}</p>
-        <p>📞 +91-9021816598</p>
+        <strong>${shippingName}</strong><br/>
+        ${shippingAddress ? shippingAddress.split('/').join('<br/>') : ''}<br/>
+        📞 +91-9021816598
       </td>
     </tr>
   </table>
 
-  <!-- Items Table -->
-  <table style="margin-top: 20px;">
+  <!-- Items -->
+  <table>
     <thead>
       <tr>
         <th>Description</th>
-        <th>Qty.</th>
+        <th>Qty</th>
         <th>Price</th>
         <th>Amount</th>
       </tr>
@@ -195,6 +183,7 @@ module.exports = function DefaultTemplate({
   <div class="signature">
     <p><strong>Signature By</strong><br>${companyName}</p>
   </div>
+
 </body>
 </html>`;
 };

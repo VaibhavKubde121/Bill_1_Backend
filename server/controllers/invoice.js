@@ -1,9 +1,8 @@
-
 const pdf = require('html-pdf');
 const fs = require('fs/promises');
-const fsc = require('fs'); // for fileExistsSync
+const fsc = require('fs');
 const path = require('path');
-const DefaultTemplate = require('../invoices/index.js'); // Your HTML template function
+const DefaultTemplate = require('../invoices/index.js');
 const { getNextInvoiceNumber } = require('../utils/invoiceUtils');
 
 const publicTempDir = 'public/temp';
@@ -17,27 +16,28 @@ const createInvoice = async (req, res) => {
       return res.status(400).json({ message: 'Invalid or empty payload' });
     }
 
-    // 🔢 Generate persistent invoice number
+    // 🧾 Generate persistent invoice number
     const newInvoiceNumber = await getNextInvoiceNumber();
     invoiceData.details.invoiceNumber = newInvoiceNumber;
 
-    // 🔧 Ensure public/temp directory exists
+    // 📁 Ensure directory exists
     const tempDirPath = path.join(rootDir, publicTempDir);
     if (!fsc.existsSync(tempDirPath)) {
       await fs.mkdir(tempDirPath, { recursive: true });
     }
 
-    // 🖼️ Upload and save logo
+    // 🖼️ Handle logo upload
     if (req.files && req.files.companyLogo) {
       const companyLogo = req.files.companyLogo;
-      const allowedExtensions = ['.png', '.jpg', '.jpeg'];
       const ext = path.extname(companyLogo.name).toLowerCase();
-      const logoFileName = 'company_logo' + ext;
-      const savePath = path.join(tempDirPath, logoFileName);
+      const allowedExtensions = ['.jpg', '.jpeg', '.png'];
 
       if (!allowedExtensions.includes(ext)) {
         return res.status(400).json({ message: 'Unsupported file format' });
       }
+
+      const logoFileName = 'company_logo' + ext;
+      const savePath = path.join(tempDirPath, logoFileName);
 
       await new Promise((resolve, reject) => {
         companyLogo.mv(savePath, (err) => {
@@ -46,37 +46,35 @@ const createInvoice = async (req, res) => {
         });
       });
 
-      // 📌 Set logo name in details
       invoiceData.details.companyLogo = logoFileName;
     } else {
-      // default logo file (already exists or fallback)
-      invoiceData.details.companyLogo = 'company_logo.jpg';
+      invoiceData.details.companyLogo = 'company_logo.jpg'; // default
     }
 
-    // 📝 Generate HTML from template
+    // ✨ Generate HTML content
     const htmlContent = DefaultTemplate(invoiceData).trim();
     const htmlPath = path.join(tempDirPath, 'invoice.html');
     await fs.writeFile(htmlPath, htmlContent, 'utf8');
 
-    // 📄 Read HTML content
+    // 📄 Read HTML for PDF generation
     const invoiceHtml = await fs.readFile(htmlPath, 'utf8');
 
-    // 📄 Define PDF generation options
+    // 🧾 Compact, single-page PDF settings
     const options = {
-      width: '200mm',
-      height: '230mm',
-      border: '5mm',
-      base: `file://${tempDirPath}/`, // ✅ Ensures image paths like src="company_logo.jpg" work
-      localUrlAccess: true,
+      width: '80mm',
+      height: '297mm',
+      border: '0mm',
+      base: `file://${path.resolve('public/temp')}/`,
+      localUrlAccess: true, // ✅ added missing comma here
       footer: {
         height: '10mm',
         contents: {
-          default: `<p style="text-align:center; margin: 0; font-size: 12px;">Thank you! Visit us again.</p>`
-        }
-      }
+          default: `<p style="text-align:center; font-size: 10px; margin: 0;">Thank you! Visit us again.</p>`,
+        },
+      },
     };
-
-    // 📄 Generate the PDF file
+    
+    // 📄 Generate PDF
     const pdfPath = path.join(tempDirPath, 'invoice.pdf');
     pdf.create(invoiceHtml, options).toFile(pdfPath, (err) => {
       if (err) {
@@ -86,12 +84,12 @@ const createInvoice = async (req, res) => {
 
       res.json({
         message: 'Invoice created successfully',
-        invoiceNumber: newInvoiceNumber
+        invoiceNumber: newInvoiceNumber,
       });
     });
 
   } catch (err) {
-    console.error('❌ Error in createInvoice:', err);
+    console.error('❌ Error in createInvoice:', err.message);
     res.status(500).json({ message: 'Server error creating invoice' });
   }
 };
